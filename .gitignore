@@ -1,0 +1,14 @@
+*.class
+*.log
+
+# Mac Specific
+.DS_Store
+
+# Android specific
+bin/
+gen/*
+/build.xml
+/local.properties
+
+# Keep gen directory
+!gen/.keep
