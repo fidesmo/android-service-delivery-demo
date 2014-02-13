@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
     // String for LogCat documentation
     private final static String TAG = "Fidesmo-Transceive-Demo";
 
-    // String constants defining the intent for using Fidesmo SEC Client
+    // String constants defining the intent for using Fidesmo App
     private final static String INTENT_URI = "https://api.fidesmo.com/transaction/";
     private final static String TRANSCEIVE_CARD_ACTION = "com.fidesmo.sec.TRANSCEIVE";
     private final static String TRANSCEIVE_MICROSD_ACTION = "com.fidesmo.sec.TRANSCEIVE_DEVICE_FIDELITY";
@@ -42,9 +42,9 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Pushed the Transceive To Card button");
-                // call the SEC Client's activity to send APDUs to a contactless
-                // card
-                callFidesmoSECClient(TRANSCEIVE_CARD_ACTION, uuidInput.getText().toString());
+                // call the Fidesmo App's activity to send APDUs to a
+                // contactless card
+                callFidesmoApp(TRANSCEIVE_CARD_ACTION, uuidInput.getText().toString());
             }
         });
 
@@ -52,9 +52,9 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Pushed the Transceive To Device Fidelity button");
-                // call the SEC Client's activity to send APDUs to a
+                // call the Fidesmo App's activity to send APDUs to a
                 // DeviceFidelity micro SD card
-                callFidesmoSECClient(TRANSCEIVE_MICROSD_ACTION, uuidInput.getText().toString());
+                callFidesmoApp(TRANSCEIVE_MICROSD_ACTION, uuidInput.getText().toString());
             }
         });
 
@@ -70,13 +70,13 @@ public class MainActivity extends Activity {
         toast.show();
     }
 
-    void callFidesmoSECClient(String action, String uuid) {
+    void callFidesmoApp(String action, String uuid) {
         try {
             // Verify that the UUID has a correct format by attempting to parse
             // it
             UUID.fromString(uuid);
-            // create Intent to one of the two Actions exposed by Fidesmo SEC
-            // Client
+            // create Intent to one of the two Actions exposed by the Fidesmo
+            // App
             Intent intent = new Intent(action, Uri.parse(INTENT_URI + uuid));
             startActivity(intent);
 
