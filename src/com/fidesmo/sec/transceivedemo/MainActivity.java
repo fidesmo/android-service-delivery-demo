@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 
     // String constants defining the intent for using Fidesmo App
     private final static String INTENT_URI = "https://api.fidesmo.com/transaction/";
-    private final static String TRANSCEIVE_CARD_ACTION = "com.fidesmo.sec.TRANSCEIVE";
+    private final static String TRANSCEIVE_CARD_ACTION = "com.fidesmo.sec.TRANSCEIVE_CARD";
     private final static String TRANSCEIVE_MICROSD_ACTION = "com.fidesmo.sec.TRANSCEIVE_DEVICE_FIDELITY";
 
     @Override
