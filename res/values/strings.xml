@@ -3,10 +3,16 @@
 
     <string name="action_settings">action Settings</string>
     <string name="app_name">Fidesmo Transceive Demo</string>
-    <string name="introduction">Sample app showing how to use the Fidesmo App. Enter the UUID returned by the Fidesmo Transceive API in the text field below:</string>
+    <string name="introduction">Sample app showing how to use the Fidesmo App, obtaining commands from a Service Provider.\nThe text field below contains the ID of the Service Provider described in the Fidesmo Service documentation\nThe Service ID is also user-editable.</string>
+    <string name="example_sp_id">e26b8f12</string>
     <string name="card_button">Download command APDUs to a contactless card</string>
     <string name="microsd_button">Download command APDUs to a DeviceFidelity microSD card</string>
-    <string name="uuid_error">Please enter UUID correctly. Format: 8-4-4-4-12 hex digits, like this: 00000000-0000-0000-0000-000000000000</string>
+    <string name="sp_id_label">Service Provider ID</string>
+    <string name="service_id_label">Service ID</string>
+    <string name="default_service_id">12345678</string>
+    <string name="input_error">Error in input parameters. Please review!</string>
+    <string name="success">The transceive operation was successful!</string>
+    <string name="failure">The transceive operation failed</string>
 
 </resources>
 

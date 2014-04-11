@@ -1,8 +1,6 @@
 
 package com.fidesmo.sec.transceivedemo;
 
-import java.util.UUID;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -20,10 +18,13 @@ public class MainActivity extends Activity {
     // String for LogCat documentation
     private final static String TAG = "Fidesmo-Transceive-Demo";
 
+    // Code to identify the call when starting Intent for Result
+    static private final int TRANSCEIVE_REQUEST_CODE = 724;
+
     // String constants defining the intent for using Fidesmo App
-    private final static String INTENT_URI = "https://api.fidesmo.com/transaction/";
-    private final static String TRANSCEIVE_CARD_ACTION = "com.fidesmo.sec.TRANSCEIVE_CARD";
-    private final static String TRANSCEIVE_MICROSD_ACTION = "com.fidesmo.sec.TRANSCEIVE_DEVICE_FIDELITY";
+    private final static String SERVICE_URI = "https://api.fidesmo.com/service/";
+    private final static String TRANSCEIVE_CARD_ACTION = "com.fidesmo.sec.DELIVER_SERVICE";
+    private final static String TRANSCEIVE_MICROSD_ACTION = "com.fidesmo.sec.DELIVER_SERVICE_DEVICE_FIDELITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,12 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         // Reference UI views and elements
-        final EditText uuidInput = (EditText) findViewById(R.id.uuid_input);
+        final EditText spIdInput = (EditText) findViewById(R.id.sp_id_input);
+        final EditText serviceIdInput = (EditText) findViewById(R.id.service_id_input);
+        // Assign default values to SP ID and Service ID
+        spIdInput.setText(R.string.example_sp_id);
+        serviceIdInput.setText(R.string.default_service_id);
+
         Button transceiveToCardButton = (Button) findViewById(R.id.card_button);
         Button transceiveToDeviceFidelityButton = (Button) findViewById(R.id.devicefidelity_button);
 
@@ -44,7 +50,8 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "Pushed the Transceive To Card button");
                 // call the Fidesmo App's activity to send APDUs to a
                 // contactless card
-                callFidesmoApp(TRANSCEIVE_CARD_ACTION, uuidInput.getText().toString());
+                callFidesmoApp(TRANSCEIVE_CARD_ACTION, spIdInput.getText().toString(),
+                        serviceIdInput.getText().toString());
             }
         });
 
@@ -54,36 +61,56 @@ public class MainActivity extends Activity {
                 Log.i(TAG, "Pushed the Transceive To Device Fidelity button");
                 // call the Fidesmo App's activity to send APDUs to a
                 // DeviceFidelity micro SD card
-                callFidesmoApp(TRANSCEIVE_MICROSD_ACTION, uuidInput.getText().toString());
+                callFidesmoApp(TRANSCEIVE_MICROSD_ACTION, spIdInput.getText().toString(),
+                        serviceIdInput.getText().toString());
             }
         });
 
     }
 
-    void wrongUuid() {
+    void wrongParameters() {
         // Error pop-up telling the user to review the input text
         Context context = getApplicationContext();
-        String text = getString(R.string.uuid_error);
+        String text = getString(R.string.input_error);
         int duration = Toast.LENGTH_LONG;
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
     }
 
-    void callFidesmoApp(String action, String uuid) {
+    void callFidesmoApp(String action, String spId, String serviceId) {
         try {
-            // Verify that the UUID has a correct format by attempting to parse
-            // it
-            UUID.fromString(uuid);
             // create Intent to one of the two Actions exposed by the Fidesmo
             // App
-            Intent intent = new Intent(action, Uri.parse(INTENT_URI + uuid));
-            startActivity(intent);
-
+            Intent intent = new Intent(action, Uri.parse(SERVICE_URI + spId + "/" + serviceId));
+            // we use startActivityForResult because we want to know if the
+            // operation was successful. startActivity() would also work, but we
+            // would not receive a resultCode
+            startActivityForResult(intent, TRANSCEIVE_REQUEST_CODE);
         } catch (IllegalArgumentException e) {
-            Log.i(TAG, "UUID entered by user could not be parsed");
-            // ask user to enter a valid UUID
-            wrongUuid();
+            Log.i(TAG, "Parameters entered by user could not be parsed");
+            // ask user to review the input parameters
+            wrongParameters();
         }
+    }
+
+    // method called when the Fidesmo App activity has finished
+    // Will just display a brief message depending on the result
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "Entered onActivityResult()");
+
+        if (requestCode == TRANSCEIVE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                Log.i(TAG, "Fidesmo SEC Client returned SUCCESS");
+                Toast.makeText(getApplicationContext(), getString(R.string.success),
+                        Toast.LENGTH_LONG).show();
+            } else {
+                Log.i(TAG, "Fidesmo SEC Client returned FAILURE");
+                Toast.makeText(getApplicationContext(), getString(R.string.failure),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 }
