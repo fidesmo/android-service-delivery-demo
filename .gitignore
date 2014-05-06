@@ -1,14 +1,18 @@
 *.class
 *.log
 
+# Gradle
+build/
+.gradle/
+
 # Mac Specific
 .DS_Store
 
 # Android specific
-bin/
-gen/*
-/build.xml
 /local.properties
 
-# Keep gen directory
-!gen/.keep
+# Android Studio IDE
+.idea
+*.iml
+*.iws
+*.ipr
