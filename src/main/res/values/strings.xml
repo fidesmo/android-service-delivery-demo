@@ -7,6 +7,7 @@
     <string name="introduction">Sample client app showing how to use the Fidesmo App. Choose the API to use:</string>
     <string name="transceive_button">Transceive API</string>
     <string name="service_delivery_button">Service Delivery API</string>
+    <string name="install_app_message">Fidesmo App is not installed in this phone. Please install it from Google Play!</string>
    
     
     <!-- strings for Transceive API -->
