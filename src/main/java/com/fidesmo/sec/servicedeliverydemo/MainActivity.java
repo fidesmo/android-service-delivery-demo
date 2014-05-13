@@ -1,5 +1,5 @@
 
-package com.fidesmo.sec.transceivedemo;
+package com.fidesmo.sec.servicedeliverydemo;
 
 import android.app.Activity;
 import android.content.Intent;

@@ -25,7 +25,7 @@ Build instructions: command line
 ------------------
 - Clone this repository
 - In the project's root directory, type ``./gradlew build``
-- To install the app into a connected phone or an emulator, type ``./gradlew installDebug`` or ``adb install build/apk/android-transceive-demo-debug-unaligned.apk`` 
+- To install the app into a connected phone or an emulator, type ``./gradlew installDebug`` or ``adb install build/apk/android-service-delivery-demo-debug-unaligned.apk``
 
 Build instructions: Android Studio IDE
 ------------------

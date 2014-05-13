@@ -3,7 +3,7 @@
 
     <!-- strings for the entire app -->
     <string name="action_settings">action Settings</string>
-    <string name="app_name">Fidesmo Transceive Demo</string>
+    <string name="app_name">Fidesmo Service Delivery Demo</string>
     <string name="introduction">Sample client app showing how to use the Fidesmo App. Choose the API to use:</string>
     <string name="transceive_button">Transceive API</string>
     <string name="service_delivery_button">Service Delivery API</string>
