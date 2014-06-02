@@ -11,7 +11,7 @@ In order to test them, first follow this common steps:
 Then, to test the *Service Delivery API:*
 
 3. Launch the Service Delivery Demo app and press the "Service Delivery API" button.
-4. You can test the Service Delivery API just by using the default values that appear pre-filled in the fields. They point to an example Service, its commented source code [is stored here](https://github.com/fidesmo/spray-example).
+4. You can test the Service Delivery API just by using the default values that appear pre-filled in the fields. They point to an example Service Provider with two available services, ``transceive`` and ``mifare``. Its commented source code [is stored here](https://github.com/fidesmo/spray-example).
 5. Depending on the type of [Secure Element](http://www.globalplatform.org/mediaguideSE.asp) you are working with, push one of the two available buttons. The Command APDUs sent by the example service will be downloaded to the Secure Element!
 
 In order to test the *Transceive API,* follow this steps:
