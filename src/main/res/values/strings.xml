@@ -4,29 +4,18 @@
     <!-- strings for the entire app -->
     <string name="action_settings">action Settings</string>
     <string name="app_name">Fidesmo Service Delivery Demo</string>
-    <string name="introduction">Sample client app showing how to use the Fidesmo App. Choose the API to use:</string>
-    <string name="transceive_button">Transceive API</string>
-    <string name="service_delivery_button">Service Delivery API</string>
     <string name="install_app_message">Fidesmo App is not installed in this phone. Please install it from Google Play!</string>
-   
-    
-    <!-- strings for Transceive API -->
-    <string name="introduction_transceive">Sample activity showing how to call the Fidesmo Transceive API from a mobile client. Enter the UUID returned by the Fidesmo Transceive API in the text field below:</string>
-    <string name="transceive_card_button">Download command APDUs to a contactless card</string>
-    <string name="transceive_microsd_button">Download command APDUs to a DeviceFidelity microSD card</string>
-    <string name="uuid_error">Please enter UUID correctly. Format: 8-4-4-4-12 hex digits, like this: 00000000-0000-0000-0000-000000000000</string>
     
     <!-- strings for Service Delivery API -->
     <string name="introduction_service_delivery">Sample Activity showing how to use the Fidesmo Service Delivery API, obtaining commands from a Service Provider.\nThe text field below contains the ID of the Service Provider described in the Fidesmo Service documentation.\nThe Service ID is also user-editable.</string>
     <string name="example_sp_id">e26b8f12</string>
-    <string name="card_button">Download command APDUs to a contactless card</string>
-    <string name="microsd_button">Download command APDUs to a DeviceFidelity microSD card</string>
+    <string name="card_button">Download service to a contactless card</string>
     <string name="sp_id_label">Service Provider ID</string>
     <string name="service_id_label">Service ID</string>
     <string name="default_service_id">transceive</string>
     <string name="input_error">Error in input parameters. Please review!</string>
-    <string name="success">The transceive operation was successful!</string>
-    <string name="failure">The transceive operation failed</string>
+    <string name="success">Service delivery was successful!</string>
+    <string name="failure">Service delivery failed</string>
 
 </resources>
 
