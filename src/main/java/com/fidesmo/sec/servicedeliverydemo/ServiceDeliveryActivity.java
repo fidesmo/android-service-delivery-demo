@@ -4,6 +4,7 @@ package com.fidesmo.sec.servicedeliverydemo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,13 +19,15 @@ public class ServiceDeliveryActivity extends Activity {
     // String for LogCat documentation
     private final static String TAG = "Fidesmo-ServiceDelivery-Demo";
 
+    // Fidesmo App package
+    private final static String FIDESMO_APP = "com.fidesmo.sec.android";
+
     // Code to identify the call when starting Intent for Result
     static private final int SERVICE_DELIVERY_REQUEST_CODE = 724;
 
     // String constants defining the intent for using Fidesmo App
     private final static String SERVICE_URI = "https://api.fidesmo.com/service/";
     private final static String SERVICE_DELIVERY_CARD_ACTION = "com.fidesmo.sec.DELIVER_SERVICE";
-    private final static String SERVICE_DELIVERY_MICROSD_ACTION = "com.fidesmo.sec.DELIVER_SERVICE_DEVICE_FIDELITY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +44,25 @@ public class ServiceDeliveryActivity extends Activity {
         serviceIdInput.setText(R.string.default_service_id);
 
         Button transceiveToCardButton = (Button) findViewById(R.id.card_button);
-        Button transceiveToDeviceFidelityButton = (Button) findViewById(R.id.devicefidelity_button);
+
+        // Detect if the Fidesmo App is installed
+        final boolean fidesmoAppInstalled = appInstalledOrNot(FIDESMO_APP);
 
         // Link UI elements to listeners
         transceiveToCardButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Pushed the Deliver Service To Card button");
-                // call the Fidesmo App's activity to send APDUs to a
-                // contactless card
-                callFidesmoApp(SERVICE_DELIVERY_CARD_ACTION, spIdInput.getText().toString(),
-                        serviceIdInput.getText().toString());
+                // call the Fidesmo App's activity to send APDUs to a contactless card
+                // but checking first if the Fidesmo App is installed
+                if (fidesmoAppInstalled) {
+                    callFidesmoApp(SERVICE_DELIVERY_CARD_ACTION, spIdInput.getText().toString(),
+                            serviceIdInput.getText().toString());
+                } else {
+                    notifyMustInstall();
+                }
             }
         });
-
-        transceiveToDeviceFidelityButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "Pushed the Deliver Service To Device Fidelity button");
-                // call the Fidesmo App's activity to send APDUs to a
-                // DeviceFidelity micro SD card
-                callFidesmoApp(SERVICE_DELIVERY_MICROSD_ACTION, spIdInput.getText().toString(),
-                        serviceIdInput.getText().toString());
-            }
-        });
-
     }
 
     void wrongParameters() {
@@ -92,6 +89,26 @@ public class ServiceDeliveryActivity extends Activity {
             // ask user to review the input parameters
             wrongParameters();
         }
+    }
+
+    // Use the package manager to detect if the Fidesmo App is installed on the phone
+    private boolean appInstalledOrNot(String uri) {
+        PackageManager pm = getPackageManager();
+        boolean app_installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            Log.i(TAG, "Fidesmo App not installed in phone");
+            app_installed = false;
+        }
+        return app_installed;
+    }
+
+    // Show a Toast message to the user informing that Fidesmo App must be installed
+    private void notifyMustInstall() {
+        Toast.makeText(getApplicationContext(), R.string.install_app_message, Toast.LENGTH_LONG).show();
     }
 
     // method called when the Fidesmo App activity has finished
