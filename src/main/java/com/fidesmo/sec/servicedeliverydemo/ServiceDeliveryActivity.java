@@ -25,9 +25,20 @@ public class ServiceDeliveryActivity extends Activity {
     // Code to identify the call when starting Intent for Result
     static private final int SERVICE_DELIVERY_REQUEST_CODE = 724;
 
+    // Code to identify the call when starting Intent for Result
+    static private final int GOOGLE_PLAY_REQUEST_CODE = 472;
+
     // String constants defining the intent for using Fidesmo App
     private final static String SERVICE_URI = "https://api.fidesmo.com/service/";
     private final static String SERVICE_DELIVERY_CARD_ACTION = "com.fidesmo.sec.DELIVER_SERVICE";
+
+    // URLs for Google Play app and to install apps via browser
+    private final static String MARKET_URI = "market://details?id=";
+    private final static String MARKET_VIA_BROWSER_URI = "http://play.google.com/store/apps/details?id=";
+
+    // UI elements
+    EditText spIdInput;
+    EditText serviceIdInput;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +48,13 @@ public class ServiceDeliveryActivity extends Activity {
         setContentView(R.layout.activity_service_delivery);
 
         // Reference UI views and elements
-        final EditText spIdInput = (EditText) findViewById(R.id.sp_id_input);
-        final EditText serviceIdInput = (EditText) findViewById(R.id.service_id_input);
+        spIdInput = (EditText) findViewById(R.id.sp_id_input);
+        serviceIdInput = (EditText) findViewById(R.id.service_id_input);
         // Assign default values to SP ID and Service ID
         spIdInput.setText(R.string.example_sp_id);
         serviceIdInput.setText(R.string.default_service_id);
 
         Button transceiveToCardButton = (Button) findViewById(R.id.card_button);
-
-        // Detect if the Fidesmo App is installed
-        final boolean fidesmoAppInstalled = appInstalledOrNot(FIDESMO_APP);
 
         // Link UI elements to listeners
         transceiveToCardButton.setOnClickListener(new OnClickListener() {
@@ -55,7 +63,7 @@ public class ServiceDeliveryActivity extends Activity {
                 Log.i(TAG, "Pushed the Deliver Service To Card button");
                 // call the Fidesmo App's activity to send APDUs to a contactless card
                 // but checking first if the Fidesmo App is installed
-                if (fidesmoAppInstalled) {
+                if (appInstalledOrNot(FIDESMO_APP)) {
                     callFidesmoApp(SERVICE_DELIVERY_CARD_ACTION, spIdInput.getText().toString(),
                             serviceIdInput.getText().toString());
                 } else {
@@ -106,9 +114,18 @@ public class ServiceDeliveryActivity extends Activity {
         return app_installed;
     }
 
-    // Show a Toast message to the user informing that Fidesmo App must be installed
+    // Show a Toast message to the user informing that Fidesmo App must be installed and launch
+    // the Google Play app-store
     private void notifyMustInstall() {
         Toast.makeText(getApplicationContext(), R.string.install_app_message, Toast.LENGTH_LONG).show();
+
+        // if the Google Play app is not installed, call the browser
+        try {
+            startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_URI + FIDESMO_APP)), GOOGLE_PLAY_REQUEST_CODE);
+        } catch (android.content.ActivityNotFoundException exception) {
+            startActivityForResult(new Intent(Intent.ACTION_VIEW, Uri.parse(MARKET_VIA_BROWSER_URI + FIDESMO_APP)), GOOGLE_PLAY_REQUEST_CODE);
+        }
+
     }
 
     // method called when the Fidesmo App activity has finished
@@ -126,6 +143,17 @@ public class ServiceDeliveryActivity extends Activity {
                 Log.i(TAG, "Fidesmo SEC Client returned FAILURE");
                 Toast.makeText(getApplicationContext(), getString(R.string.failure),
                         Toast.LENGTH_LONG).show();
+            }
+        } else if (requestCode == GOOGLE_PLAY_REQUEST_CODE) {
+            // at this point we do not know whether the user installed the Fidesmo App or not
+            // because the Activity is always returning RESULT_OK
+            // so we need to check again
+            if (appInstalledOrNot(FIDESMO_APP)) {
+                callFidesmoApp(SERVICE_DELIVERY_CARD_ACTION, spIdInput.getText().toString(),
+                        serviceIdInput.getText().toString());
+            } else {
+                // if at this point the user has not installed the Fidesmo App, we just give up
+                finish();
             }
         }
 
