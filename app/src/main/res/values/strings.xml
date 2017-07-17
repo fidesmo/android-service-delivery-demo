@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- strings for the entire app -->
+    <string name="action_settings">action Settings</string>
+    <string name="app_name">Fidesmo Service Delivery Demo</string>
+    <string name="install_app_message">Fidesmo App is not installed in this phone. Please install it from Google Play!</string>
+
+    <!-- strings for Service Delivery API -->
+    <string name="introduction_service_delivery">Sample Activity showing how to use the Fidesmo Service Delivery API, obtaining commands from a Service Provider.\nThe text field below contains the ID of the Service Provider described in the Fidesmo Service documentation.\nThe Service ID is also user-editable.</string>
+    <string name="example_sp_id">e26b8f12</string>
+    <string name="card_button">Download service to a contactless card</string>
+    <string name="sp_id_label">Service Provider ID</string>
+    <string name="service_id_label">Service ID</string>
+    <string name="default_service_id">transceive</string>
+    <string name="input_error">Error in input parameters. Please review!</string>
+    <string name="success">Service delivery was successful!</string>
+    <string name="failure">Service delivery failed</string>
+</resources>
